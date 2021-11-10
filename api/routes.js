@@ -4,7 +4,7 @@ const router = express.Router();
 
 //Start Routing Requests
 router.route('/').get((req, res, next)=>{
-    res.send("Hello World");
+    res.send("Login");
 });
 
 module.exports = router;

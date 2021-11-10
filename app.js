@@ -2,6 +2,7 @@ let express = require('express');
 let path = require('path');
 let cors = require('cors');
 let routes = require('./api/routes.js');
+let UserController = require('./modules/usuario/usuario.module')().UserController;
 
 const app = express();
 
@@ -17,5 +18,6 @@ mongoDBUtil.init();
 
 // Start Routing Process
 app.use('/',routes);
+app.use('/usuarios', UserController);
 
 module.exports = app;
