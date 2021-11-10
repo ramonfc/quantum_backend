@@ -1,2 +1,58 @@
-Hola soy Ramon
-Hola Mundo.
+<div align="center"><img src="https://i.ibb.co/yn7tSgR/Quantumlogo.jpg" alt="MisionTIC Quantum" height="200" /> </div>
+
+# ♾️ Mintic Project: Quantum
+_Software application for the investigation projects development
+<br>
+## It will include the next modules:
+* User and role management
+* Project Management
+* Suscriptions managment
+* Project progress management
+
+## Team Development
+* Ramon Castaño
+* Javier Bedoya
+* Wilson Fino
+* Miguel Sánchez
+* Jhon Aldana
+
+## Scrum roles
+|Rol | Sprint #1
+|--|--|--|--|
+|Analyst |Miguel Sánchez
+|Database Administrator |Javier Bedoya
+|Developer |All
+|Product Owner |Wilson Fino
+|Scrum Master |Ramón Castaño
+
+
+
+
+## Team Tools
+* [Trello](https://trello.com/b/WnYfbbbc/proyecto-desarrollo-web-mintic) private access.
+
+
+## Deploy process in Azure
+``` html
+bash: insert code here
+```
+
+## Tech Stack
+* HTML
+* CSS3
+* Bootstrap
+* JavaScript
+* React
+* Mongo
+* Node.js
+* Express
+* GraphQL
+* Firebase
+* Azure
+
+
+
+## Versions
+> Last version: N/A
+
+
