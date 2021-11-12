@@ -1,7 +1,7 @@
 <div align="center"><img src="https://i.ibb.co/yn7tSgR/Quantumlogo.jpg" alt="MisionTIC Quantum" height="200" /> </div>
 
-# ♾️ Mintic Project: Quantum
-_Software application for the investigation projects development
+# Mintic Project: Quantum
+Software application for the investigation projects development
 <br>
 ## It will include the next modules:
 * User and role management
@@ -15,16 +15,17 @@ _Software application for the investigation projects development
 * Wilson Fino
 * Miguel Sánchez
 * Jhon Aldana
+* Lennys Caré
 
 ## Scrum roles
 |Rol | Sprint #1
-|--|--|--|--|
+|--|--|
 |Analyst |Miguel Sánchez
 |Database Administrator |Javier Bedoya
 |Developer |All
 |Product Owner |Wilson Fino
 |Scrum Master |Ramón Castaño
-
+|Analyst |Lennys Caré
 
 
 
