@@ -1,0 +1,9 @@
+{
+    "mongodb":{
+      "server": "project1.9u8ry.mongodb.net",
+      "database": "university_proyect",
+      "user": "mauricio123",
+      "password": "1979Mono",
+      "params": ""
+    }
+}
