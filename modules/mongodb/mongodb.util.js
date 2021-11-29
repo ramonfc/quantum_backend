@@ -8,7 +8,7 @@
         init: init
     };
 
-    function init(){
+    async function init(){
         let options = {
             promiseLibrary: require('bluebird'),
             useNewUrlParser: true
@@ -18,7 +18,7 @@
         console.log("ConnectionString: ",connectionString);
         console.log("MongoConfig", mongoDBConfig);
 
-        mongoose.connect(connectionString, options)
+        await mongoose.connect(connectionString, options)
         .then(function(result){
             console.log("MongoDB connection successful. DB: " + connectionString);
         }).catch(function(error){
