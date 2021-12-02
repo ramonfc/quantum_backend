@@ -38,6 +38,7 @@
         
     };
 
+    
     function getUsers(req, res, next) {
 
         UserService.fetchUsers()
