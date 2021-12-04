@@ -18,6 +18,7 @@ const typeDefs = gql `
     type Proyecto{
         identificador: String
         nombre: String
+        integrantes: [String]
     }
     input objective{
         identificador: String
@@ -44,6 +45,7 @@ const typeDefs = gql `
     
     type Query{
         proyectos:[Proyecto]
+        findProjectByLeaderId(leader: String):[Proyecto] 
     }
     scalar Date
     # Queries to perfor calls (CREATE, UPDATE, DELETE) in proyect data source
