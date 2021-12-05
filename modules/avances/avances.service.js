@@ -26,13 +26,14 @@
        try {
            const project = await ProjectModel.findOne({identificador:projectId});
            // Cread avances
-           await AdvanceModel.create({idProyecto:project._id, fecha:date, descripcion:descriptions, observaciones:observations})
+           const newAdvance = await AdvanceModel.create({idProyecto:project._id, fecha:date, descripcion:descriptions, observaciones:observations})
            // Cambiar fase del proyecto
            if(project && project.fase === "INICIADO"){
-                await ProjectModel.findOneAndUpdate({identificador:projectId},{
-                    fase:"EN_DESARROLLO"
-                })
-           };
+                await ProjectModel.findOneAndUpdate({identificador:projectId},
+                    {fase:"EN_DESARROLLO", $push:{avances:newAdvance._id}})
+           }else if (project.fase === "EN_DESARROLLO"){
+           await ProjectModel.findOneAndUpdate({identificador:projectId},
+            {$push:{avances:newAdvance._id}})};
            return true; 
        } catch (err) {
            console.log(err);

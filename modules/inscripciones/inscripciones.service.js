@@ -3,6 +3,7 @@
 
     module.exports = {
         fetchInscriptions: fetchInscriptions,
+        fetchInscriptionsByProject: fetchInscriptionsByProject,
         addInscription : addInscription,
         changeInscriptionState: changeInscriptionState
     }
@@ -14,6 +15,13 @@
 
     async function fetchInscriptions(){
         return await InscriptionModel.find({});
+    }
+
+    async function fetchInscriptionsByProject(idProject){
+        const project = await ProjectModel.findOne({identificador: idProject});
+        if(project) {
+            return await InscriptionModel.find({idProyecto: project._id})
+        }
     }
 
     async function addInscription(projectId, studentId){

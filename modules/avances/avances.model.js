@@ -28,5 +28,5 @@
         timestamps : true
     });
 
-    module.exports = mongoose.model('avance', avancesSchema);
+    module.exports = mongoose.model('avances', avancesSchema);
 })();

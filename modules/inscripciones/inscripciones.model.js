@@ -23,8 +23,8 @@
         },
         estado:{
             type: String,
-            enum:["ACEPTADA", "RECHAZADA",null],
-            default: null
+            enum:["ACEPTADA", "RECHAZADA","PENDIENTE"],
+            default: "PENDIENTE"
         }
     },{timestamps : true});
 

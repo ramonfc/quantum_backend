@@ -10,7 +10,8 @@
         addMemberToProject: addMemberToProject,
         removeMemberFromProject: removeMemberFromProject,
         fetchProjects: fetchProjects,
-        fetchProjectByLeaderId
+        fetchProjectByLeaderId,
+        fetchProjectByIdentifier
     };
 
     const ProjectModel = require('./proyecto.module')().ProjectModel;
@@ -33,6 +34,10 @@
             }
         }
          
+    }
+
+    async function fetchProjectByIdentifier(idProyecto){
+        return await ProjectModel.findOne({identificador: idProyecto}).populate({path:"lider"}).populate({path:"avances"})
     }
 
     

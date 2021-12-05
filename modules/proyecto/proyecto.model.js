@@ -33,6 +33,10 @@
             type : Date,
             required : true
         },
+        avances:[{
+            type : Schema.Types.ObjectId,
+            ref : "avances",
+        }],
         lider:{
             type : Schema.Types.ObjectId,
             ref : "usuarios",

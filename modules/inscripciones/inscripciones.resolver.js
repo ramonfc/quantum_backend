@@ -5,6 +5,10 @@ const inscriptionResolvers = {
     Query:{
         inscriptions: async (parent, args, context, info) =>{
             return await inscriptionService.fetchInscriptions();
+        },
+
+        inscriptionsByProject: async (parent, args, context, info) =>{
+            return await inscriptionService.fetchInscriptionsByProject(args.idProject)
         }
     },
     Mutation:{

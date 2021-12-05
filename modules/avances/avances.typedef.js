@@ -6,7 +6,7 @@ const typeDef = gql `
         idProyecto: String,
         fecha : String,
         descripcion: String,
-        observacion: String
+        observaciones: String
     }
     type Query{
         advances: [avance]
