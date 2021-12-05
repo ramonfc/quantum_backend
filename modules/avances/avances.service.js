@@ -14,11 +14,11 @@
 
    async function fetchAdvances(){
        try{
-           await AdvanceModel.find({});
-           return true;
+           return AdvanceModel.find({});
+         
        }catch(err){
            console.log(err);
-           return false;
+           
        }
    }
 

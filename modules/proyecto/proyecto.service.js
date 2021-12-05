@@ -9,7 +9,8 @@
         deleteObjectiveFromProject: deleteObjectiveFromProject,
         addMemberToProject: addMemberToProject,
         removeMemberFromProject: removeMemberFromProject,
-        fetchProjects: fetchProjects
+        fetchProjects: fetchProjects,
+        fetchProjectByLeaderId
     };
 
     const ProjectModel = require('./proyecto.module')().ProjectModel;
@@ -23,10 +24,21 @@
             .exec();
     }
 
+    async function fetchProjectByLeaderId(leaderId) { 
+        const datosLider = await UserModel.findOne({ identificacion: leaderId }); 
+        if (datosLider) { 
+            if(datosLider.tipoUsuario === "LIDER"){
+                return await ProjectModel.find({lider: datosLider._id})
+                .exec();
+            }
+        }
+         
+    }
 
+    
     async function createProject(project) {
         const liderExist = await UserModel.findOne({ identificacion: project.lider })
-        if (liderExist) {
+        if (liderExist && liderExist.tipoUsuario === "LIDER") {
             project.lider = liderExist.id;
             return await ProjectModel.create(project)
                 .then((p) => { return true })

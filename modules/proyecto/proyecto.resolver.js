@@ -4,7 +4,8 @@ const projectService = require('./proyecto.module')().ProjectService;
 const projectResolvers = {
     Query:
 {
-    proyectos: async () => await projectService.fetchProjects()
+    proyectos: async () => await projectService.fetchProjects(),
+    findProjectByLeaderId: async (parent, args, context, info) => await projectService.fetchProjectByLeaderId(args.leader),
 },
     Mutation:{
         addProject: async(parent, args, context, info) => {
