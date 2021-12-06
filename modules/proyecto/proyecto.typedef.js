@@ -21,6 +21,9 @@ const typeDefs = gql `
         integrantes: [String]
         avances:[Avances]
         lider: Usuario
+        objetivosGenerales: [String]
+        objetivosEspecificos: [String]
+        presupuesto: Int
     }
     type Avances{
         fecha: Date
