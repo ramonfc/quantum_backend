@@ -2,17 +2,18 @@ const {gql} = require('apollo-server-express');
 
 const typeDefs = gql`
     enum inscriptionState{
-        ACEPTADA, RECHAZADA
+        ACEPTADA, RECHAZADA, PENDIENTE
     }
     type inscription{
-        projectId: String
-        userId: String
-        inscriptionState:inscriptionState
-        dateIn: String
-        dateOut: String
+        idProyecto: String
+        idEstudiante: String
+        estado:inscriptionState
+        fdechaIngreso: String
+        fechaEgreso: String
     }
     type Query{
         inscriptions:[inscription]
+        inscriptionsByProject(idProject: String):[inscription]
     }
     type Mutation{
         addInscription(projectId: String, studentId: String): Boolean,

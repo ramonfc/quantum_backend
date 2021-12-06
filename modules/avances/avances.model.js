@@ -7,6 +7,10 @@
             type : Schema.Types.ObjectId,
             ref : 'proyectos'
         },
+        advanceId:{
+            type : String,
+            required : true
+        },
         fecha:{
             type : Date,
             required : true
@@ -22,11 +26,17 @@
         observaciones:{
             type : String,
             required : true
-        }
+        },
+
+        /* observaciones:[{
+            advanceId : String,
+            fecha : Date,
+            observaciones: String
+        }] */
     },
     {
         timestamps : true
     });
 
-    module.exports = mongoose.model('avance', avancesSchema);
+    module.exports = mongoose.model('avances', avancesSchema);
 })();
