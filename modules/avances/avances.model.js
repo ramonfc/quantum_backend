@@ -24,12 +24,11 @@
             required : true
         },
         observaciones:{
-            type : String,
-            required : true
+            type : Object,
+            required : false
         },
 
-        /* observaciones:[{
-            advanceId : String,
+      /*   observaciones:[{
             fecha : Date,
             observaciones: String
         }] */

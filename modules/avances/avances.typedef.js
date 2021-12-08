@@ -9,6 +9,10 @@ const typeDef = gql `
         descripcion: String,
         observaciones: String
     }
+    input Observation{
+        fecha: Date
+        observaciones: String
+    }
     type Query{
         advances: [avance]
         advancesByProjectId(projectId: String): [avance]
@@ -20,6 +24,11 @@ const typeDef = gql `
             fecha: Date, 
             descripciones: String, 
             observaciones: String):Boolean
+        addObservationToAdvance(idProyecto: String,
+            advanceId: String,
+            observaciones: Observation):Boolean
+    
+    
     }
 `;
 

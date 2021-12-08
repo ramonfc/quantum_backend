@@ -5,7 +5,7 @@
         fetchAdvances: fetchAdvances,
         fetchAdvancesByProjectId: fetchAdvancesByProjectId,
         addAdvance: addAdvance,
-        /* addObservationToAdvance: addObservationToAdvance */
+        addObservationToAdvance: addObservationToAdvance
     };
 
     const ProjectModel = require('../proyecto/proyecto.module')().ProjectModel;
@@ -55,22 +55,19 @@
         }
     }
 
-    /* async function addObservationToAdvance(idProyecto, advanceId, date, observations) {
+    async function addObservationToAdvance(idProyecto, advanceId, observations) {
         try {
             const project = await ProjectModel.findOne({ identificador: idProyecto });
             const advance = await AdvanceModel.findOne({ idProyecto: project._id, advanceId: advanceId });
-            // Cread avances
-            const newObservation = { advanceId: advanceId, fecha:date, Observacion: observations };
-            // Cambiar fase del proyecto
             if (project && advance) {
-                await AdvanceModel.findOneAndUpdate({ _id: advance._Id },
-                    {$push: { observaciones: newObservation } })
+                await AdvanceModel.findOneAndUpdate({ _id: advance._id },
+                    {$set: { observaciones: observations } })
             } 
             return true;
         } catch (err) {
             console.log(err);
             return false;
         }
-    } */
+    }
 
 })();

@@ -28,6 +28,17 @@ const userTypeDefs = gql`
         nombre: String
         contrasena: String
     }
+
+    input AddUserInput{
+        correo: String, 
+        identificacion: String, 
+        nombre: String, 
+        contrasena: String,   
+        tipoUsuario: userType
+        estado: userState = PENDIENTE,
+        activo: Boolean= True
+    }
+
     # Manage user state (PENDIENTE, AUTORIZADO, NO AUTORIZADO)
     input UserUpdateState{
         estado: userState

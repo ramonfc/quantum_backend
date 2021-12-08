@@ -13,9 +13,9 @@ const avancesResolvers = {
         addAdvance: async(parent, args, context, info) =>{
             return AdvanceService.addAdvance(args.idProyecto, args.advanceId, args.fecha, args.descripciones, args.observaciones );
         },
-        /* addObservationToAdvance: async(parent, args, context, info) =>{
-            return AdvanceService.addObservationToAdvance(args.idProyecto, args.advanceId, args.fecha, args.observaciones );
-        }, */
+        addObservationToAdvance: async(parent, args, context, info) =>{
+            return AdvanceService.addObservationToAdvance(args.idProyecto, args.advanceId, args.observaciones );
+        },
     }
 }
 
