@@ -28,7 +28,7 @@ const typeDef = gql `
             advanceId: String,
             observaciones: Observation):Boolean
     
-    
+
     }
 `;
 

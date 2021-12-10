@@ -19,6 +19,7 @@ const typeDefs = gql `
         identificador: String
         nombre: String
         integrantes: [String]
+        estado : String
         avances:[Avances]
         lider: Usuario
         objetivosGenerales: [String]
@@ -57,6 +58,15 @@ const typeDefs = gql `
         fechaFin: String
         lider: String 
     }
+
+    input projectEditInput{ 
+        identificador:String
+        nombre: String
+        objetivosGenerales: [String]
+        objetivosEspecificos: [String]
+        presupuesto: Float  
+    }
+
     scalar Date
     
     type Query{
@@ -80,6 +90,7 @@ const typeDefs = gql `
         deleteObjectiveFromProject(projectId:String, objectiveType: objectiveType, objectiveId: String):Boolean,
         addMemberToProject(projectId: String, userId: String):Boolean,
         removeMemberFromProject(projectId: String, userId: String):Boolean
+        editProject(input: projectEditInput): String
 
     }
 `;

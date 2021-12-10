@@ -2,6 +2,7 @@
     'use strict';
 
     module.exports = {
+        editProject:editProject,
         createProject: createProject,
         projectPhaseUpdate: projectPhaseUpdate,
         changeProjectState: changeProjectState,
@@ -20,8 +21,26 @@
     const {formatDate} = require('../helpers/helperFunctions');
 
 
+    async function editProject(identificador,nombre,objetivosGenerales,objetivosEspecificos,presupuesto) {
+        
+        console.log('objetivosEspecificos',objetivosEspecificos)
+        //const proyectoEditado =  await ProjectModel.findOne({identificador:identificador})
+        
+        const proyectoEditado =  await ProjectModel.findOneAndUpdate({identificador:identificador}, {$set :{ 
+            nombre: nombre,
+            objetivosGenerales:objetivosGenerales,
+            objetivosEspecificos:objetivosEspecificos,
+            presupuesto:presupuesto
+          }})
+        if(proyectoEditado){
+            return "Actualizado !"
+        }else{
+            return " No actualizado. Error"
+        }
+    }   
+    
     async function fetchProjects() {
-        return await ProjectModel.find({})
+        return await ProjectModel.find({}).populate({path:"lider"}).populate({path:"avances"})
             .exec();
     }
 
