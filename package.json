@@ -12,6 +12,7 @@
   "author": "Mauricio Bedoya",
   "license": "ISC",
   "dependencies": {
+    "aes256": "^1.1.0",
     "apollo-server-express": "^3.5.0",
     "bluebird": "^3.7.2",
     "cors": "^2.8.5",
@@ -20,7 +21,9 @@
     "graphql": "^15.7.2",
     "lodash": "^4.17.21",
     "mongodb": "^4.1.4",
-    "mongoose": "^6.0.12"
+    "mongoose": "^6.0.12",
+    "nodejs-aes256": "^1.0.1",
+    "simple-aes-256": "^3.0.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

@@ -26,17 +26,15 @@ const userTypeDefs = gql`
     input UserUpdateInfo{
         correo: String
         nombre: String
-        contrasena: String
+        activo: Boolean
     }
 
     input AddUserInput{
-        correo: String, 
-        identificacion: String, 
-        nombre: String, 
-        contrasena: String,   
+        correo: String 
+        identificacion: String 
+        nombre: String 
+        contrasena: String   
         tipoUsuario: userType
-        estado: userState = PENDIENTE,
-        activo: Boolean= True
     }
 
     # Manage user state (PENDIENTE, AUTORIZADO, NO AUTORIZADO)
@@ -55,9 +53,7 @@ const userTypeDefs = gql`
 
     # Queries to perfor calls (CREATE, UPDATE, DELETE) in user data source.
     type Mutation{
-        addUser(correo: String, identificacion: String, 
-            nombre: String, contrasena: String, 
-            estado: userState = PENDIENTE, tipoUsuario: userType, activo: Boolean= True): Boolean
+        addUser(input:AddUserInput): Boolean
         changeUserState(id: String, state: userState): Boolean
         updateUser(id: String, newInfo:UserUpdateInfo): Boolean
         deleteUser(id: String): Boolean
