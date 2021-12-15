@@ -88,11 +88,10 @@ const aes256 = require('aes256');
             .exec();
     }
 
-    async function updateUser(UserId, newUserInfo) {
-        console.log("Id:",UserId);
+    async function updateUser(newUserInfo) {       
         console.log("Info:",newUserInfo);
         return await UserModel
-            .findOneAndUpdate({ "identificacion": UserId }, { $set: newUserInfo }).then((u) => { return (u == null) ? false : true });
+            .findOneAndUpdate({identificacion: newUserInfo.identificacion},{ $set: newUserInfo }).then((u) => { return (u == null) ? false : true });
     }
 
     async function deleteUser(UserId) {

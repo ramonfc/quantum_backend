@@ -25,8 +25,9 @@ const userTypeDefs = gql`
     # Presition 2 userType can not be updated.
     input UserUpdateInfo{
         correo: String
-        nombre: String
+        contrasena: String
         activo: Boolean
+        identificacion: String
     }
 
     input AddUserInput{
@@ -55,7 +56,7 @@ const userTypeDefs = gql`
     type Mutation{
         addUser(input:AddUserInput): Boolean
         changeUserState(id: String, state: userState): Boolean
-        updateUser(id: String, newInfo:UserUpdateInfo): Boolean
+        updateUser(newInfo:UserUpdateInfo): Boolean
         deleteUser(id: String): Boolean
         activeUser(id: String):Boolean
         inactiveUser(id: String): Boolean

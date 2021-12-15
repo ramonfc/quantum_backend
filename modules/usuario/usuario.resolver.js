@@ -20,7 +20,7 @@ const userResolvers = {
             return await userService.changeUserState(args.id, args.state);
         },
         updateUser: async(parent, args, context, info) =>{
-            return await userService.updateUser(args.id, args.newInfo)
+            return await userService.updateUser(args.newInfo)
         },
         deleteUser: async(parent, args, context, info) => {
             return await userService.deleteUser(args.id)
