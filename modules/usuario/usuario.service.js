@@ -90,9 +90,20 @@ const aes256 = require('aes256');
 
     async function updateUser(newUserInfo) {       
         console.log("Info:",newUserInfo);
+        try{
+            const encryptedPlainText = aes256.encrypt(key, newUserInfo.contrasena);
+        newUserInfo.contrasena = encryptedPlainText;
+        }
+        catch(error){
+            
+        }
+        
         return await UserModel
-            .findOneAndUpdate({identificacion: newUserInfo.identificacion},{ $set: newUserInfo }).then((u) => { return (u == null) ? false : true });
-    }
+            .findOneAndUpdate({identificacion: newUserInfo.identificacion},{ $set: newUserInfo }).then((u) => {
+                console.log("U: ", u);
+                 return (u == null) ? false : true });
+            //return await UserModel.findOne({identificacion: newUserInfo.identificacion}).then((u) => { return (u == null) ? false : true });
+        }
 
     async function deleteUser(UserId) {
         let user = await (await UserModel.deleteOne({ "identificacion": UserId })).deletedCount
