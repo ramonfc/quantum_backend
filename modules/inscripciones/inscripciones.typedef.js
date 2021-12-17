@@ -5,6 +5,7 @@ const typeDefs = gql`
         ACEPTADA, RECHAZADA, PENDIENTE
     }
     type inscription{
+        _id: ID
         idProyecto: String
         idEstudiante: String
         estado:inscriptionState

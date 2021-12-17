@@ -44,7 +44,7 @@
         },
         integrantes:[{
             type : Schema.Types.ObjectId,
-            ref : "usuarios"
+            ref : 'usuarios'
         }],
         estado:{
             type : String,
@@ -52,8 +52,8 @@
         },
         fase:{
             type : String,
-            enum : ["INICIADO","EN_DESARROLLO","TERMINADO",null],
-            default : null
+            enum : ["INICIADO","EN_DESARROLLO","TERMINADO","NULL"],
+            default : "NULL"
         },
     },
         {

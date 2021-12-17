@@ -74,12 +74,12 @@ const aes256 = require('aes256');
     }
 
     async function fetchActiveUsers() {
-        return await UserModel.find({ activo: true })
+        return await UserModel.find({ activo: "ACTIVO" })
             .exec();
     }
 
     async function countActiveUsers() {
-        return await UserModel.countDocuments({ activo: true })
+        return await UserModel.countDocuments({ activo: "ACTIVO" })
             .exec();
     }
 
@@ -111,11 +111,12 @@ const aes256 = require('aes256');
     }
 
     async function activeUser(UserId) {
+        console.log("Id: ", UserId)
         try {
             let user = await fetchUserByPersonalId(UserId)
                 .then((u) => { return u }).catch((err) => { console.log(err) });
-            if (user.activo === false) {
-                await UserModel.findOneAndUpdate({ "identificacion": UserId }, { $set: { activo: true } })
+            if (user.activo === "INACTIVO") {
+                await UserModel.findOneAndUpdate({ "identificacion": UserId }, { $set: { activo: "ACTIVO" } })
                 return true;
             } else {
                 return false;
@@ -130,8 +131,8 @@ const aes256 = require('aes256');
     async function inactiveUser(UserId) {
         try {
             let user = await UserModel.findOne({ "identificacion": UserId });
-            if (user.activo === true) {
-                await UserModel.findOneAndUpdate({ "identificacion": UserId }, { $set: { activo: false } })
+            if (user.activo === "ACTIVO") {
+                await UserModel.findOneAndUpdate({ "identificacion": UserId }, { $set: { activo: "INACTIVO" } })
                 return true
             } else {
                 return false

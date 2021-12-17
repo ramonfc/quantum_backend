@@ -10,6 +10,11 @@ const userTypeDefs = gql`
     enum userState{
         PENDIENTE, AUTORIZADO, NO_AUTORIZADO
     }
+    # User Active
+    enum userActive{
+        ACTIVO,
+        INACTIVO
+    }
     # User attributes
     type User{
         _id: ID
@@ -19,14 +24,14 @@ const userTypeDefs = gql`
         contrasena: String
         tipoUsuario: userType
         estado: userState
-        activo: Boolean
+        activo: userActive
     }
 
     # Presition 2 userType can not be updated.
     input UserUpdateInfo{
         correo: String
         contrasena: String
-        activo: Boolean
+        activo: userActive
         identificacion: String
     }
 

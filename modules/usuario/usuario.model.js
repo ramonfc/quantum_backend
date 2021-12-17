@@ -29,14 +29,14 @@
         },
         estado:{
             type: String,
-            enum:["PENDIENTE","AUTORIZADO","NO AUTORIZADO"],
+            enum:["PENDIENTE","AUTORIZADO","NO_AUTORIZADO"],
             required: false,
             default: 'PENDIENTE'
         },
         activo:{
-            type: Boolean,
+            type: String,
             required: false,
-            default: true
+            default: "ACTIVO"
         }
 
     },

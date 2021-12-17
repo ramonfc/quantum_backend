@@ -56,7 +56,7 @@
     }
 
     async function fetchProjectByIdentifier(idProyecto){
-        return await ProjectModel.findOne({identificador: idProyecto}).populate({path:"lider"}).populate({path:"avances"})
+        return await ProjectModel.findOne({identificador: idProyecto}).populate({path:"integrantes"}).populate({path:"lider"}).populate({path:"avances"})
     }
 
     
@@ -76,7 +76,7 @@
         try{
             const project = await ProjectModel.findOne({identificador:projectId});
             switch(project.fase){
-                case null:
+                case "NULL":
                     if(newPhase === "INICIADO"){
                         await ProjectModel.findOneAndUpdate({identificador:projectId},{$set:{fase:newPhase}});
                         return true;
@@ -94,7 +94,7 @@
                     break;
                 case "EN_DESARROLLO":
                     if(newPhase === "TERMINADO"){
-                        await ProjectModel.findOneAndUpdate({identificador:projectId},{fase:newPhase, estado:"Inactivo"});
+                        await ProjectModel.findOneAndUpdate({identificador:projectId},{fase:newPhase, estado:"INACTIVO"});
                         // fechaEgreso automatica cuando el proyecto Termina
                         await InscriptionModel.findOneAndUpdate({idProyecto:project.id},{$set:{fechaEgreso:formatDate()}});
                         return true;
@@ -114,7 +114,12 @@
     async function changeProjectState(id, newState){
         try{
             const project = await ProjectModel.findOne({identificador: id});
-            if (project && project.fase != "TERMINADO" && project.estado != newState){
+
+            if(project && project.estado ==="INACTIVO" && project.fase ==="NULL"){
+                await ProjectModel.findOneAndUpdate({identificador: id},{$set:{estado:newState, fase:"INICIADO", fechaInicio:formatDate()}});
+            }
+
+           else if (project && project.fase != "TERMINADO" && project.estado != newState){
                 await ProjectModel.findOneAndUpdate({identificador: id},{$set:{estado:newState}});
                 // Precisión 6) 
                 // La fecha de egreso en las inscripciones que están en estado “Aceptado” y que

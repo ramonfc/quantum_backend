@@ -5,7 +5,8 @@ const typeDefs = gql `
     enum projectPhase{
         INICIADO,
         EN_DESARROLLO,
-        TERMINADO
+        TERMINADO,
+        NULL
     }
     enum projectState{
         ACTIVO,
@@ -18,13 +19,14 @@ const typeDefs = gql `
     type Proyecto{
         identificador: String
         nombre: String
-        integrantes: [String]
+        integrantes: [Usuario]
         estado : String
         avances:[Avances]
         lider: Usuario
         objetivosGenerales: [String]
         objetivosEspecificos: [String]
         presupuesto: Int
+        fase: projectPhase
     }
     type Avances{
         fecha: Date
