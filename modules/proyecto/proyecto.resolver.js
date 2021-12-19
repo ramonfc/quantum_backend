@@ -32,7 +32,7 @@ const projectResolvers = {
         },
         editProject: async(parent, args, context, info) => {
             console.log('args: ',args)
-            return await projectService.editProject(args.input.identificador,args.input.nombre,args.input.objetivosGenerales,args.input.objetivosEspecificos,args.input.presupuesto);
+            return await projectService.editProject(args.input.identificador,args.input.nombre,args.input.objetivosGenerales,args.input.objetivosEspecificos,args.input.presupuesto, args.input.fase);
         },
     }
 };

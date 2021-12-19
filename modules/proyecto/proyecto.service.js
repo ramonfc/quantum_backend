@@ -2,7 +2,7 @@
     'use strict';
 
     module.exports = {
-        editProject:editProject,
+        editProject: editProject,
         createProject: createProject,
         projectPhaseUpdate: projectPhaseUpdate,
         changeProjectState: changeProjectState,
@@ -18,48 +18,70 @@
     const ProjectModel = require('./proyecto.module')().ProjectModel;
     const UserModel = require('../usuario/usuario.module')().UserModel;
     const InscriptionModel = require('../inscripciones/inscripciones.module')().InscriptionModel;
-    const {formatDate} = require('../helpers/helperFunctions');
+    const { formatDate } = require('../helpers/helperFunctions');
 
 
-    async function editProject(identificador,nombre,objetivosGenerales,objetivosEspecificos,presupuesto) {
+    async function editProject(identificador, nombre, objetivosGenerales, objetivosEspecificos, presupuesto, fase) {
+        const proyecto = await ProjectModel.findOne({ identificador: identificador });
+        if(fase ==="TERMINADO"){
+            console.log('objetivosEspecificos', objetivosEspecificos)
+     
+        if (proyecto && proyecto.fase === "EN_DESARROLLO") {
+            const proyectoEditado = await ProjectModel.findOneAndUpdate({ identificador: identificador }, {
+                $set: {
+                    nombre: nombre,
+                    objetivosGenerales: objetivosGenerales,
+                    objetivosEspecificos: objetivosEspecificos,
+                    presupuesto: presupuesto,
+                    fase: fase,
+                    estado: "INACTIVO",
+                    fechaFin: formatDate()
+                }
+            });
+        }
         
-        console.log('objetivosEspecificos',objetivosEspecificos)
-        //const proyectoEditado =  await ProjectModel.findOne({identificador:identificador})
-        
-        const proyectoEditado =  await ProjectModel.findOneAndUpdate({identificador:identificador}, {$set :{ 
-            nombre: nombre,
-            objetivosGenerales:objetivosGenerales,
-            objetivosEspecificos:objetivosEspecificos,
-            presupuesto:presupuesto
-          }})
-        if(proyectoEditado){
+        }else {
+            if (proyecto) {
+                const proyectoEditado = await ProjectModel.findOneAndUpdate({ identificador: identificador }, {
+                    $set: {
+                        nombre: nombre,
+                        objetivosGenerales: objetivosGenerales,
+                        objetivosEspecificos: objetivosEspecificos,
+                        presupuesto: presupuesto,
+                        fase: fase
+                    }
+                });
+        }
+
+    }
+        if (proyectoEditado) {
             return "Actualizado !"
-        }else{
+        } else {
             return " No actualizado. Error"
         }
-    }   
-    
+    }
+
     async function fetchProjects() {
-        return await ProjectModel.find({}).populate({path:"lider"}).populate({path:"avances"})
+        return await ProjectModel.find({}).populate({ path: "lider" }).populate({ path: "avances" })
             .exec();
     }
 
-    async function fetchProjectByLeaderId(leaderId) { 
-        const datosLider = await UserModel.findOne({ identificacion: leaderId }); 
-        if (datosLider) { 
-            if(datosLider.tipoUsuario === "LIDER"){
-                return await ProjectModel.find({lider: datosLider._id})
-                .exec();
+    async function fetchProjectByLeaderId(leaderId) {
+        const datosLider = await UserModel.findOne({ identificacion: leaderId });
+        if (datosLider) {
+            if (datosLider.tipoUsuario === "LIDER") {
+                return await ProjectModel.find({ lider: datosLider._id })
+                    .exec();
             }
         }
-         
+
     }
 
-    async function fetchProjectByIdentifier(idProyecto){
-        return await ProjectModel.findOne({identificador: idProyecto}).populate({path:"integrantes"}).populate({path:"lider"}).populate({path:"avances"})
+    async function fetchProjectByIdentifier(idProyecto) {
+        return await ProjectModel.findOne({ identificador: idProyecto }).populate({ path: "lider" }).populate({ path: "avances" }).populate({ path: "integrantes" })
     }
 
-    
+
     async function createProject(project) {
         const liderExist = await UserModel.findOne({ identificacion: project.lider })
         if (liderExist && liderExist.tipoUsuario === "LIDER") {
@@ -72,66 +94,66 @@
         }
     }
 
-    async function projectPhaseUpdate(projectId, newPhase){
-        try{
-            const project = await ProjectModel.findOne({identificador:projectId});
-            switch(project.fase){
+    async function projectPhaseUpdate(projectId, newPhase) {
+        try {
+            const project = await ProjectModel.findOne({ identificador: projectId });
+            switch (project.fase) {
                 case "NULL":
-                    if(newPhase === "INICIADO"){
-                        await ProjectModel.findOneAndUpdate({identificador:projectId},{$set:{fase:newPhase}});
+                    if (newPhase === "INICIADO") {
+                        await ProjectModel.findOneAndUpdate({ identificador: projectId }, { $set: { fase: newPhase } });
                         return true;
-                    }else{
+                    } else {
                         throw new Error("Phase change are incremental by 1. See phase options.")
                     }
                     break;
                 case "INICIADO":
-                    if(newPhase === "EN_DESARROLLO"){
-                        await ProjectModel.findOneAndUpdate({identificador:projectId},{fase:newPhase});
+                    if (newPhase === "EN_DESARROLLO") {
+                        await ProjectModel.findOneAndUpdate({ identificador: projectId }, { fase: newPhase });
                         return true;
-                    }else{
+                    } else {
                         throw new Error("Phase change are incremental by 1. See phase options.")
                     }
                     break;
                 case "EN_DESARROLLO":
-                    if(newPhase === "TERMINADO"){
-                        await ProjectModel.findOneAndUpdate({identificador:projectId},{fase:newPhase, estado:"INACTIVO"});
+                    if (newPhase === "TERMINADO") {
+                        await ProjectModel.findOneAndUpdate({ identificador: projectId }, { fase: newPhase, estado: "INACTIVO" });
                         // fechaEgreso automatica cuando el proyecto Termina
-                        await InscriptionModel.findOneAndUpdate({idProyecto:project.id},{$set:{fechaEgreso:formatDate()}});
+                        await InscriptionModel.findOneAndUpdate({ idProyecto: project.id }, { $set: { fechaEgreso: formatDate() } });
                         return true;
-                    }else{
+                    } else {
                         throw new Error("Phase change are incremental by 1. See phase options.")
                     }
                     break;
                 case "TERMINADO":
                     throw new Error("Project already Terminated. Create a new project");
             }
-        }catch(err){
+        } catch (err) {
             console.log(err);
             return false;
         }
     }
 
-    async function changeProjectState(id, newState){
-        try{
-            const project = await ProjectModel.findOne({identificador: id});
+    async function changeProjectState(id, newState) {
+        try {
+            const project = await ProjectModel.findOne({ identificador: id });
 
-            if(project && project.estado ==="INACTIVO" && project.fase ==="NULL"){
-                await ProjectModel.findOneAndUpdate({identificador: id},{$set:{estado:newState, fase:"INICIADO", fechaInicio:formatDate()}});
+            if (project && project.estado === "INACTIVO" && project.fase === "NULL") {
+                await ProjectModel.findOneAndUpdate({ identificador: id }, { $set: { estado: newState, fase: "INICIADO", fechaInicio: formatDate() } });
             }
 
-           else if (project && project.fase != "TERMINADO" && project.estado != newState){
-                await ProjectModel.findOneAndUpdate({identificador: id},{$set:{estado:newState}});
+            else if (project && project.fase != "TERMINADO" && project.estado != newState) {
+                await ProjectModel.findOneAndUpdate({ identificador: id }, { $set: { estado: newState } });
                 // Precisión 6) 
                 // La fecha de egreso en las inscripciones que están en estado “Aceptado” y que
                 // cuya fecha de egreso está vacía, se debe guardar la fecha en la que se hizo 
                 // la inactivación del proyecto.
-                await InscriptionModel.updateMany({idProyecto:project.id, estado:"ACEPTADA", fechaEgreso:null},{$set:{fechaEgreso:formatDate()}});
+                await InscriptionModel.updateMany({ idProyecto: project.id, estado: "ACEPTADA", fechaEgreso: null }, { $set: { fechaEgreso: formatDate() } });
                 return true
-            }else{
+            } else {
                 console.log("Project state equals to newState or project is terminated.");
                 return false;
             }
-        }catch(err){
+        } catch (err) {
             console.log(err)
             return false;
         }
@@ -171,7 +193,7 @@
         }
     }
 
-    async function deleteObjectiveFromProject(projectId, objectiveType, objectiveId){
+    async function deleteObjectiveFromProject(projectId, objectiveType, objectiveId) {
         try {
             const project = await ProjectModel.findOne({ identificador: projectId });
             if (project) {
@@ -180,7 +202,7 @@
                         return ((x.identificador === objectiveId));
                     }).length == 0 ? true : false;
                     if (isObjective) {
-                        return await ProjectModel.findOneAndUpdate({ identificador: projectId }, { $pull: { objetivosGenerales: {identificador: objectiveId} } }).then((p) => { return true })
+                        return await ProjectModel.findOneAndUpdate({ identificador: projectId }, { $pull: { objetivosGenerales: { identificador: objectiveId } } }).then((p) => { return true })
                             .catch((err) => { console.log(err); return false });
                     } else {
                         return false;
@@ -190,7 +212,7 @@
                         return ((x.identificador === objectiveId));
                     }).length == 0 ? true : false;
                     if (!isObjective) {
-                        return await ProjectModel.findOneAndUpdate({ identificador: projectId }, { $pull: { objetivosEspecificos: {identificador: objectiveId} } }).then((p) => { return true })
+                        return await ProjectModel.findOneAndUpdate({ identificador: projectId }, { $pull: { objetivosEspecificos: { identificador: objectiveId } } }).then((p) => { return true })
                             .catch((err) => { console.log(err); return false });
                     } else {
                         return false;
@@ -206,51 +228,51 @@
     }
 
     // ESTA NO VA !!MALA¡¡
-    async function addMemberToProject(projectId, userId){
-        try{
-            const project = await ProjectModel.findOne({identificador: projectId});
-            const user = await UserModel.findOne({identificacion: userId});
+    async function addMemberToProject(projectId, userId) {
+        try {
+            const project = await ProjectModel.findOne({ identificador: projectId });
+            const user = await UserModel.findOne({ identificacion: userId });
             // No se puede agregar integrantes en un projecto inactivo
-            if(project.estado.toUpperCase() === "INACTIVO"){
+            if (project.estado.toUpperCase() === "INACTIVO") {
                 return false;
-            // No se puede tener dos veces las misma persona integrada en un projecto activo
-            }else if(project.integrantes.includes(user.id) && project.estado.toUpperCase() === "ACTIVO"){
+                // No se puede tener dos veces las misma persona integrada en un projecto activo
+            } else if (project.integrantes.includes(user.id) && project.estado.toUpperCase() === "ACTIVO") {
                 return false;
-            }else{
-                if(user.tipoUsuario.toUpperCase() === "ESTUDIANTE"){
+            } else {
+                if (user.tipoUsuario.toUpperCase() === "ESTUDIANTE") {
                     // Agregar inscripcion si no esta
-                    await InscriptionModel.create({idProyecto: project.id, idEstudiante: user.id})
+                    await InscriptionModel.create({ idProyecto: project.id, idEstudiante: user.id })
                     // Agregar estudiane a proyecto
-                    await ProjectModel.findOneAndUpdate({identificador: projectId},
-                    {$push:{integrantes:user.id}})
+                    await ProjectModel.findOneAndUpdate({ identificador: projectId },
+                        { $push: { integrantes: user.id } })
                     return true;
                 }
-                
+
             }
-        }catch(err){
+        } catch (err) {
             console.log("Project or user not found !!");
             console.log(err);
             return false;
         }
     }
-    
+
     // ESTA NO VA !!MALA¡¡
-    async function removeMemberFromProject(projectId, userId){
-        try{
-            const project = await ProjectModel.findOne({identificador: projectId});
-            const user = await UserModel.findOne({identificacion: userId});
-            if(project.integrantes.includes(user.id)){
-                await ProjectModel.findOneAndUpdate({identificador: projectId},
-                    {$pull: {integrantes:user.id}});
+    async function removeMemberFromProject(projectId, userId) {
+        try {
+            const project = await ProjectModel.findOne({ identificador: projectId });
+            const user = await UserModel.findOne({ identificacion: userId });
+            if (project.integrantes.includes(user.id)) {
+                await ProjectModel.findOneAndUpdate({ identificador: projectId },
+                    { $pull: { integrantes: user.id } });
                 return true;
-            }else{
+            } else {
                 return false;
             }
-        }catch(err){
+        } catch (err) {
             console.log("Project or user not found !!");
             return false;
         }
     }
-   
+
 
 })();

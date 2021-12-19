@@ -27,6 +27,8 @@ const typeDefs = gql `
         objetivosEspecificos: [String]
         presupuesto: Int
         fase: projectPhase
+        fechaInicio: Date
+        fechaFin: Date
     }
     type Avances{
         fecha: Date
@@ -66,7 +68,8 @@ const typeDefs = gql `
         nombre: String
         objetivosGenerales: [String]
         objetivosEspecificos: [String]
-        presupuesto: Float  
+        presupuesto: Float
+        fase: projectPhase  
     }
 
     scalar Date

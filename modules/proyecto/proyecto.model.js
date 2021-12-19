@@ -26,12 +26,12 @@
         },
         fechaInicio:{
             type : Date,
-            required : true,
-            default : Date.now
+            required : false,
+            //default : Date.now
         },
         fechaFin:{
             type : Date,
-            required : true
+            required : false
         },
         avances:[{
             type : Schema.Types.ObjectId,
