@@ -11,7 +11,7 @@
     const InscriptionModel = require('./inscripciones.module')().InscriptionModel;
     const ProjectModel = require('../proyecto/proyecto.module')().ProjectModel;
     const UserModel = require('../usuario/usuario.module')().UserModel;
-    const {formatDate} = require('../helpers/helperFunctions')
+    const {formatDate,dateNow} = require('../helpers/helperFunctions')
 
     async function fetchInscriptions(){
         return await InscriptionModel.find({});
@@ -26,14 +26,24 @@
 
     async function addInscription(projectId, studentId){
         try{
+            console.log('estoy aqui')
             const project = await ProjectModel.findOne({identificador: projectId});
+            console.log(project._id)
             const student = await UserModel.findOne({identificacion: studentId});
+            console.log(student._id)
+            //Buscamos una inscripcion pre existente
+            const inscripcionExistente = await InscriptionModel.findOne({idProyecto: project._id, idEstudiante:student._id});
+            if (inscripcionExistente)
+            {
+                console.log('YA EXISTE ESTA INSCRIPCION')
+                return 'Ya te encuentras inscrito!'
+            }
             if(project && project.estado === "ACTIVO" && project.fase != "TERMINADO" && student.tipoUsuario === "ESTUDIANTE"){
                 // Agregar inscripcion si no esta
                 await InscriptionModel.create({idProyecto: project.id, idEstudiante: student.id});
-                return true;
+                return 'Te inscribiste con Exito!';
             }else{
-                return false
+                return 'Warning: El proyecto se encuentra Inactivo o Terminado!'
             }
         }catch(err){
             console.log(err);
@@ -43,10 +53,12 @@
 
     async function changeInscriptionState(inscriptionId, newState){
         try{
+            console.log('dateNow:', dateNow())
             const inscription = await InscriptionModel.findById(inscriptionId);
             if(inscription && inscription.estado != newState && newState === "ACEPTADA"){
                 // Acepte y agregar fecha de ingreso en la inscripcion
-                await InscriptionModel.findByIdAndUpdate(inscriptionId,{$set:{estado:newState,fechaIngreso:formatDate()}});
+                
+                await InscriptionModel.findByIdAndUpdate(inscriptionId,{$set:{estado:newState,fechaIngreso:dateNow()}});
                 // Agregar al equipo solo si no pertenece al mismo y no estaba agregado previamente
                 console.log(inscription.idProyecto);
                 const a = await ProjectModel.findOneAndUpdate({_id:inscription.idProyecto},{$addToSet:{integrantes:inscription.idEstudiante}});

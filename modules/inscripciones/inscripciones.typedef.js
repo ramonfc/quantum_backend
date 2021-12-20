@@ -17,7 +17,7 @@ const typeDefs = gql`
         inscriptionsByProject(idProject: String):[inscription]
     }
     type Mutation{
-        addInscription(projectId: String, studentId: String): Boolean,
+        addInscription(projectId: String, studentId: String): String,
         changeInscriptionState(inscriptionId: String, newState: inscriptionState):Boolean
     }
 `;
