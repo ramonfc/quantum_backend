@@ -6,7 +6,8 @@ const projectResolvers = {
 {
     proyectos: async () => await projectService.fetchProjects(),
     findProjectByLeaderId: async (parent, args, context, info) => await projectService.fetchProjectByLeaderId(args.leader),
-    projectByIdentifier: async(parent, args, context, info)=> await projectService.fetchProjectByIdentifier(args.idProject)
+    projectByIdentifier: async(parent, args, context, info)=> await projectService.fetchProjectByIdentifier(args.idProject),
+    findProjectByStudentId: async (parent, args, context, info) => await projectService.fetchProjectByStudentId(args.id),
 },
     Mutation:{
         addProject: async(parent, args, context, info) => {

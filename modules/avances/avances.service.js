@@ -12,7 +12,7 @@
     const UserModel = require('../usuario/usuario.module')().UserModel;
     const InscriptionModel = require('../inscripciones/inscripciones.module')().InscriptionModel;
     const AdvanceModel = require('./avances.module')().AdvanceModel;
-    const { formatDate } = require('../helpers/helperFunctions');
+    const { formatDate, dateNow } = require('../helpers/helperFunctions');
 
     async function fetchAdvances() {
         try {
@@ -35,11 +35,11 @@
 
     }
 
-    async function addAdvance(projectId, advanceId, date, descriptions, observations) {
+    async function addAdvance(projectId, advanceId, descriptions, observations) {
         try {
             const project = await ProjectModel.findOne({ identificador: projectId });
             // Cread avances
-            const newAdvance = await AdvanceModel.create({ idProyecto: project._id, advanceId: advanceId, fecha: date, descripcion: descriptions, observaciones: observations })
+            const newAdvance = await AdvanceModel.create({ idProyecto: project._id, advanceId: advanceId, fecha: dateNow, descripcion: descriptions, observaciones: observations })
             // Cambiar fase del proyecto
             if (project && project.fase === "INICIADO") {
                 await ProjectModel.findOneAndUpdate({ identificador: projectId },
@@ -56,12 +56,16 @@
     }
 
     async function addObservationToAdvance(idProyecto, advanceId, observations) {
+       const obj = {fecha: dateNow(),
+        observaciones: observations
+    }
+        
         try {
             const project = await ProjectModel.findOne({ identificador: idProyecto });
             const advance = await AdvanceModel.findOne({ idProyecto: project._id, advanceId: advanceId });
             if (project && advance) {
                 await AdvanceModel.findOneAndUpdate({ _id: advance._id },
-                    {$set: { observaciones: observations } })
+                    {$set: { observaciones: obj } })
             } 
             return true;
         } catch (err) {

@@ -55,7 +55,7 @@
         try{
             console.log('dateNow:', dateNow())
             const inscription = await InscriptionModel.findById(inscriptionId);
-            if(inscription && inscription.estado != newState && newState === "ACEPTADA"){
+            if(inscription && inscription.estado != newState && (newState === "ACEPTADA" || newState ==="RECHAZADA")){
                 // Acepte y agregar fecha de ingreso en la inscripcion
                 
                 await InscriptionModel.findByIdAndUpdate(inscriptionId,{$set:{estado:newState,fechaIngreso:dateNow()}});

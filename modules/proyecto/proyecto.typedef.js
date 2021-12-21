@@ -78,6 +78,7 @@ const typeDefs = gql `
         proyectos:[Proyecto]
         findProjectByLeaderId(leader: String):[Proyecto] 
         projectByIdentifier(idProject: String): Proyecto
+        findProjectByStudentId(id: String): [Proyecto]
     }
     scalar Date
     # Queries to perfor calls (CREATE, UPDATE, DELETE) in proyect data source

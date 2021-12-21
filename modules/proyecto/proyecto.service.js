@@ -12,7 +12,8 @@
         removeMemberFromProject: removeMemberFromProject,
         fetchProjects: fetchProjects,
         fetchProjectByLeaderId,
-        fetchProjectByIdentifier
+        fetchProjectByIdentifier,
+        fetchProjectByStudentId:fetchProjectByStudentId
     };
 
     const ProjectModel = require('./proyecto.module')().ProjectModel;
@@ -75,6 +76,16 @@
             }
         }
 
+    }
+
+    async function fetchProjectByStudentId(studentId){
+        const dataStudent = await UserModel.findOne({ identificacion: studentId });
+        if (dataStudent) {
+            if (dataStudent.tipoUsuario === "ESTUDIANTE") {
+                return await ProjectModel.find({integrantes: dataStudent._id}).populate("lider")
+                    .exec();
+            }
+        }
     }
 
     async function fetchProjectByIdentifier(idProyecto) {

@@ -1,16 +1,18 @@
 const {gql} = require('apollo-server-express');
 
 const typeDef = gql `
-    
+    type Observacion {
+        fecha: Date
+        observaciones: String
+    }
     type avance{
         idProyecto: String,
         advanceId: String
-        fecha : String,
+        fecha : Date,
         descripcion: String,
-        observaciones: String
+        observaciones: Observacion
     }
-    input Observation{
-        fecha: Date
+    input Observation{        
         observaciones: String
     }
     type Query{
@@ -21,12 +23,11 @@ const typeDef = gql `
     type Mutation{
         addAdvance(idProyecto: String,
             advanceId: String, 
-            fecha: Date, 
             descripciones: String, 
             observaciones: String):Boolean
         addObservationToAdvance(idProyecto: String,
             advanceId: String,
-            observaciones: Observation):Boolean
+            observaciones: String):Boolean
     
 
     }
