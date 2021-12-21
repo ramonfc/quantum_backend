@@ -13,6 +13,15 @@
             ref: 'usuarios',
             required: true
         },
+        identificacionEstudiante: {
+            type: String
+        },
+        nombreEstudiante:{
+            type: String
+        },
+        nombreProyecto:{
+            type: String
+        },
         fechaIngreso:{
             type: Date,
             default:""

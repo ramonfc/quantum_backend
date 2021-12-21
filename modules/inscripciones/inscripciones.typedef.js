@@ -17,6 +17,9 @@ const typeDefs = gql`
         _id: ID
         idProyecto: String
         idEstudiante: String
+        nombreEstudiante: String
+        identificacionEstudiante: String
+        nombreProyecto: String
         estado:inscriptionState
         fdechaIngreso: String
         fechaEgreso: String

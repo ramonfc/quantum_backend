@@ -40,7 +40,7 @@
             }
             if(project && project.estado === "ACTIVO" && project.fase != "TERMINADO" && student.tipoUsuario === "ESTUDIANTE"){
                 // Agregar inscripcion si no esta
-                await InscriptionModel.create({idProyecto: project.id, idEstudiante: student.id});
+                await InscriptionModel.create({idProyecto: project.id, idEstudiante: student.id, nombreProyecto:project.nombre, nombreEstudiante: student.nombre, identificacionEstudiante: student.identificacion});
                 return 'Te inscribiste con Exito!';
             }else{
                 return 'Warning: El proyecto se encuentra Inactivo o Terminado!'
