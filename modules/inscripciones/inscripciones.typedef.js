@@ -4,6 +4,15 @@ const typeDefs = gql`
     enum inscriptionState{
         ACEPTADA, RECHAZADA, PENDIENTE
     }
+
+    type Usuario{
+        nombre: String
+    }
+
+    type Proyecto{
+        identificador: String
+    }
+
     type inscription{
         _id: ID
         idProyecto: String

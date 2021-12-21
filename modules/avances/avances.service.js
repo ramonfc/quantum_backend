@@ -39,7 +39,7 @@
         try {
             const project = await ProjectModel.findOne({ identificador: projectId });
             // Cread avances
-            const newAdvance = await AdvanceModel.create({ idProyecto: project._id, advanceId: advanceId, fecha: dateNow, descripcion: descriptions, observaciones: observations })
+            const newAdvance = await AdvanceModel.create({ idProyecto: project._id, advanceId: advanceId, fecha: dateNow(), descripcion: descriptions, observaciones: observations })
             // Cambiar fase del proyecto
             if (project && project.fase === "INICIADO") {
                 await ProjectModel.findOneAndUpdate({ identificador: projectId },
